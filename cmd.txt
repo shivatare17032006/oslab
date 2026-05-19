@@ -1,0 +1,113 @@
+
+# BASIC FILE & DIRECTORY
+ls → to list files and directories
+ls -l → to show detailed file list
+ls -a → to show hidden files
+pwd → to show current directory path
+cd dir → to change directory
+mkdir dir → to create a new directory
+rmdir dir → to remove empty directory
+
+# FILE OPERATIONS
+touch file.txt → to create empty file
+cat file.txt → to display file content
+cp file1 file2 → to copy file
+mv file1 file2 → to move or rename file
+rm file.txt → to delete file
+
+# TEXT PROCESSING
+grep "text" file.txt → to search text in file
+grep -i "text" file.txt → to search text ignoring case
+grep -v "text" file.txt → to show lines not matching text
+
+sort file.txt → to arrange data in order
+sort -r file.txt → to reverse sort data
+
+wc file.txt → to count lines, words, characters
+wc -l file.txt → to count lines only
+wc -w file.txt → to count words only
+wc -c file.txt → to count characters
+
+cut -d ":" -f1 file.txt → to extract specific column from file
+
+# PIPES & REDIRECTION
+command1 | command2 → to pass output of one command to another
+
+> file.txt → to overwrite output into file
+>> file.txt → to append output into file
+< file.txt → to take input from file
+
+ls > out.txt → to store output of ls into file
+cat file.txt | grep "os" → to filter output using pipe
+
+# PERMISSIONS
+chmod 777 file.txt → to give full permissions
+chmod u+x file.txt → to add execute permission to user
+chmod g-w file.txt → to remove write permission from group
+chown user file.txt → to change file owner
+
+# PROCESS MANAGEMENT
+ps → to show running processes
+ps -ef → to show all processes in detail
+top → to show live running processes
+kill pid → to stop a process
+kill -9 pid → to force stop a process
+
+# BACKGROUND / FOREGROUND
+command & → to run process in background
+fg → to bring process to foreground
+bg → to continue process in background
+jobs → to show background jobs
+
+# SYSTEM INFO
+df -h → to check disk space usage
+du -h → to check file/folder size
+free -m → to check memory usage
+uname -a → to show system information
+
+# NETWORK
+ifconfig → to show network configuration
+ping google.com → to check internet connection
+netstat -tuln → to show open network ports
+
+# FILE SEARCH
+find . -name file.txt → to search file in current directory
+find /home -name "*.c" → to search files in system
+
+# AWK & SED
+awk '{print $1}' file.txt → to print first column of file
+sed 's/os/linux/' file.txt → to replace text in file
+
+# COMPRESSION
+tar -cvf file.tar folder → to create archive
+tar -xvf file.tar → to extract archive
+gzip file.txt → to compress file
+gunzip file.txt.gz → to decompress file
+
+# QUICK VIVA POINTS
+grep → to search text
+sort → to arrange data
+wc → to count data
+chmod → to change permissions
+ps/top → to show processes
+kill → to stop process
+awk → to extract columns
+sed → to replace text
+find → to search files
+| → to connect commands
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
