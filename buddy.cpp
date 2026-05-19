@@ -30,3 +30,4 @@ int main(){
     cout<<"\nfragmantation:"<<block-processize<<endl;
     cout<<endl;
 }
+

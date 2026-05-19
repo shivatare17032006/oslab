@@ -1,211 +1,528 @@
-#include <iostream>
+// #include <iostream>
+// #include <vector>
+
+// using namespace std;
+
+// void calculateNeed(int n, int m,
+//                    vector<vector<int>>& alloc,
+//                    vector<vector<int>>& maxm,
+//                    vector<vector<int>>& need) {
+
+//     for (int i = 0; i < n; i++)
+//         for (int j = 0; j < m; j++)
+//             need[i][j] = maxm[i][j] - alloc[i][j];
+// }
+
+// void displayMatrices(int n, int m,
+//                      vector<vector<int>>& alloc,
+//                      vector<vector<int>>& maxm,
+//                      vector<vector<int>>& need,
+//                      vector<int>& avail) {
+
+//     cout << "\n--- Current System State ---\n";
+
+//     cout << "\nAllocation Matrix:\n";
+//     for (int i = 0; i < n; i++) {
+//         cout << "P" << i << ": ";
+//         for (int j = 0; j < m; j++)
+//             cout << alloc[i][j] << " ";
+//         cout << endl;
+//     }
+
+//     cout << "\nMax Matrix:\n";
+//     for (int i = 0; i < n; i++) {
+//         cout << "P" << i << ": ";
+//         for (int j = 0; j < m; j++)
+//             cout << maxm[i][j] << " ";
+//         cout << endl;
+//     }
+
+//     cout << "\nNeed Matrix:\n";
+
+//     for (int i = 0; i < n; i++) {
+//         cout << "P" << i << ": ";
+//         for (int j = 0; j < m; j++)
+//             cout << need[i][j] << " ";
+//         cout << endl;
+//     }
+
+//     cout << "\nAvailable Resources:\n";
+//     for (int i = 0; i < m; i++)
+//         cout << avail[i] << " ";
+
+//     cout << endl;
+// }
+
+// bool checkSafety(int n, int m,
+//                  vector<vector<int>>& alloc,
+//                  vector<vector<int>>& need,
+//                  vector<int>& avail,
+//                  vector<int>& safeSeq) {
+
+//     vector<int> work = avail;
+//     vector<int> finish(n, 0);
+
+//     int count = 0;
+
+//     while (count < n) {
+
+//         bool found = false;
+
+//         for (int i = 0; i < n; i++) {
+
+//             if (!finish[i]) {
+
+//                 bool canAllocate = true;
+
+//                 for (int j = 0; j < m; j++) {
+
+//                     if (need[i][j] > work[j]) {
+//                         canAllocate = false;
+//                         break;
+//                     }
+//                 }
+
+//                 if (canAllocate) {
+
+//                     for (int j = 0; j < m; j++)
+//                         work[j] += alloc[i][j];
+
+//                     safeSeq.push_back(i);
+
+//                     finish[i] = 1;
+//                     found = true;
+//                     count++;
+//                 }
+//             }
+//         }
+
+//         if (!found) {
+//             cout << "\nSystem is NOT in safe state!\n";
+//             return false;
+//         }
+//     }
+
+//     cout << "\nSystem is in SAFE state!\n";
+
+//     cout << "Safe Sequence: ";
+
+//     for (int i = 0; i < n; i++)
+//         cout << "P" << safeSeq[i] << " ";
+
+//     cout << endl;
+
+//     return true;
+// }
+
+// bool requestResources(int n, int m,
+//                       vector<vector<int>>& alloc,
+//                       vector<vector<int>>& need,
+//                       vector<int>& avail,
+//                       int process,
+//                       vector<int>& request) {
+
+//     for (int i = 0; i < m; i++) {
+
+//         if (request[i] > need[process][i]) {
+//             cout << "Error: Request exceeds maximum claim!\n";
+//             return false;
+//         }
+
+//         if (request[i] > avail[i]) {
+//             cout << "Resources not available. Process must wait!\n";
+//             return false;
+//         }
+//     }
+
+//     vector<int> tempAvail = avail;
+//     vector<vector<int>> tempAlloc = alloc;
+//     vector<vector<int>> tempNeed = need;
+
+//     for (int i = 0; i < m; i++) {
+
+//         tempAvail[i] -= request[i];
+//         tempAlloc[process][i] += request[i];
+//         tempNeed[process][i] -= request[i];
+//     }
+
+//     vector<int> safeSeq;
+
+//     if (checkSafety(n, m, tempAlloc, tempNeed, tempAvail, safeSeq)) {
+
+//         avail = tempAvail;
+//         alloc = tempAlloc;
+//         need = tempNeed;
+
+//         cout << "Request Granted!\n";
+//         return true;
+//     }
+
+//     else {
+
+//         cout << "Request Denied (Unsafe State)\n";
+//         return false;
+//     }
+// }
+
+// int main() {
+
+//     int n, m, choice;
+
+//     cout << "Enter number of processes: ";
+//     cin >> n;
+
+//     cout << "Enter number of resources: ";
+//     cin >> m;
+
+//     vector<vector<int>> alloc(n, vector<int>(m));
+//     vector<vector<int>> maxm(n, vector<int>(m));
+//     vector<vector<int>> need(n, vector<int>(m));
+
+//     vector<int> avail(m);
+
+//     cout << "Enter Allocation Matrix:\n";
+
+//     for (int i = 0; i < n; i++)
+//         for (int j = 0; j < m; j++)
+//             cin >> alloc[i][j];
+
+//     cout << "Enter Max Matrix:\n";
+
+//     for (int i = 0; i < n; i++)
+//         for (int j = 0; j < m; j++)
+//             cin >> maxm[i][j];
+
+//     cout << "Enter Available Resources:\n";
+
+//     for (int i = 0; i < m; i++)
+//         cin >> avail[i];
+
+//     calculateNeed(n, m, alloc, maxm, need);
+
+//     do {
+
+//         cout << "\n===== BANKER'S ALGORITHM MENU =====\n";
+
+//         cout << "1. Display System State\n";
+//         cout << "2. Check Safety\n";
+//         cout << "3. Request Resources\n";
+//         cout << "4. Exit\n";
+
+//         cout << "Enter choice: ";
+//         cin >> choice;
+
+//         switch (choice) {
+
+//             case 1:
+//                 displayMatrices(n, m, alloc, maxm, need, avail);
+//                 break;
+
+//             case 2: {
+
+//                 vector<int> safeSeq;
+
+//                 checkSafety(n, m, alloc, need, avail, safeSeq);
+
+//                 break;
+//             }
+
+//             case 3: {
+
+//                 int process;
+
+//                 cout << "Enter process number: ";
+//                 cin >> process;
+
+//                 vector<int> request(m);
+
+//                 cout << "Enter request:\n";
+
+//                 for (int i = 0; i < m; i++)
+//                     cin >> request[i];
+
+//                 requestResources(n, m, alloc, need,
+//                                  avail, process, request);
+
+//                 break;
+//             }
+
+//             case 4:
+//                 cout << "Exiting...\n";
+//                 break;
+
+//             default:
+//                 cout << "Invalid choice!\n";
+//         }
+
+//     } while (choice != 4);
+
+//     return 0;
+// }
+
+
+
+#include<iostream>
+#include<vector>
 using namespace std;
 
-void calculateNeed(int n, int m, int alloc[][10], int maxm[][10], int need[][10]) {
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-            need[i][j] = maxm[i][j] - alloc[i][j];
+void needmatrix(vector<vector<int>> &alloc,vector<vector<int>> &max,vector<vector<int>> &need,int n,int m){
+
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            need[i][j]=max[i][j]-alloc[i][j];
+        }
+    }
+
 }
 
-void displayMatrices(int n, int m, int alloc[][10], int maxm[][10], int need[][10], int avail[]) {
-    cout << "\n--- Current System State ---\n";
+void dispaly(vector<vector<int>> &alloc,vector<vector<int>> &max,vector<vector<int>> &need,vector<int> avilable,int n,int m){
 
-    cout << "\nAllocation Matrix:\n";
-    for (int i = 0; i < n; i++) {
-        cout << "P" << i << ": ";
-        for (int j = 0; j < m; j++)
-            cout << alloc[i][j] << " ";
-        cout << endl;
+    // allocation
+    cout<<"allocation matrix:\n";
+    cout<<endl;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cout<<alloc[i][j]<<" ";
+
+        }
+        cout<<endl;
+    }
+     cout<<"\nmax matrix:\n";
+     cout<<endl;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cout<<max[i][j]<<" ";
+
+        }
+        cout<<endl;
     }
 
-    cout << "\nMax Matrix:\n";
-    for (int i = 0; i < n; i++) {
-        cout << "P" << i << ": ";
-        for (int j = 0; j < m; j++)
-            cout << maxm[i][j] << " ";
-        cout << endl;
+
+    cout<<"\nneed matrix:\n";
+     cout<<endl;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cout<<need[i][j]<<" ";
+
+        }
+        cout<<endl;
     }
 
-    cout << "\nNeed Matrix:\n";
-    for (int i = 0; i < n; i++) {
-        cout << "P" << i << ": ";
-        for (int j = 0; j < m; j++)
-            cout << need[i][j] << " ";
-        cout << endl;
-    }
 
-    cout << "\nAvailable Resources:\n";
-    for (int i = 0; i < m; i++)
-        cout << avail[i] << " ";
-    cout << endl;
+    cout<<"\navilable resorcese\n";
+     cout<<endl;
+        for(int j=0;j<m;j++){
+            cout<<avilable[j]<<" ";
+
+        }
+        cout<<endl;
+    
+
+
 }
 
-bool checkSafety(int n, int m, int alloc[][10], int need[][10], int avail[], int safeSeq[]) {
-    int work[10], finish[10];
 
-    for (int i = 0; i < m; i++)
-        work[i] = avail[i];
+bool checksafty(vector<vector<int>> &alloc,vector<vector<int>> &max,vector<vector<int>> &need,vector<int> avilable,int n,int m){
+vector<int> work=avilable;
+vector<int> iscomplete(n,0);
+vector<int> safe(m,0);
+int c=0;
+while(c<n){
+      bool found=false;
+    for(int i=0;i<n;i++){
 
-    for (int i = 0; i < n; i++)
-        finish[i] = 0;
-
-    int count = 0;
-
-    while (count < n) {
-        bool found = false;
-
-        for (int i = 0; i < n; i++) {
-            if (finish[i] == 0) {
-                bool canAllocate = true;
-
-                for (int j = 0; j < m; j++) {
-                    if (need[i][j] > work[j]) {
-                        canAllocate = false;
-                        break;
-                    }
-                }
-
-                if (canAllocate) {
-                    for (int j = 0; j < m; j++)
-                        work[j] += alloc[i][j];
-
-                    safeSeq[count++] = i;
-                    finish[i] = 1;
-                    found = true;
-                }
-            }
+        bool canallo=true;
+    if(iscomplete[i]!=1){
+       for(int j=0;j<m;j++){
+        if(work[j]<need[i][j] ){
+             canallo=false;
+             break;
         }
 
-        if (!found) {
-            cout << "\nSystem is NOT in safe state!\n";
-            return false;
+        
+       }
+
+       if(canallo){
+        for(int j=0;j<m;j++){
+            work[j]=work[j]+alloc[i][j];
         }
+        iscomplete[i]=1;
+           found=true;
+           c++;
+           safe.push_back(i);
+
+
+       }
+
+      
+
+
     }
 
-    cout << "\nSystem is in SAFE state!\nSafe sequence: ";
-    for (int i = 0; i < n; i++)
-        cout << "P" << safeSeq[i] << " ";
-    cout << endl;
-
-    return true;
 }
 
-bool requestResources(int n, int m, int alloc[][10], int need[][10], int avail[], int process, int request[]) {
-    for (int i = 0; i < m; i++) {
-        if (request[i] > need[process][i]) {
-            cout << "Error: Request exceeds maximum claim!\n";
-            return false;
-        }
-        if (request[i] > avail[i]) {
-            cout << "Resources not available. Process must wait!\n";
-            return false;
-        }
-    }
 
-    int tempAvail[10];
-    int tempAlloc[10][10], tempNeed[10][10];
+if(!found){
+    cout<<"\nnot safe\n";
+    return false;
 
-    for (int i = 0; i < m; i++)
-        tempAvail[i] = avail[i] - request[i];
+}
+}
 
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            tempAlloc[i][j] = alloc[i][j];
-            tempNeed[i][j] = need[i][j];
-        }
-    }
 
-    for (int i = 0; i < m; i++) {
-        tempAlloc[process][i] += request[i];
-        tempNeed[process][i] -= request[i];
-    }
+cout<<"\n safe \nsafe sequence is:";
+for(int i=0;i<m;i++){
+    cout<<" p"<<safe[i];
+}
 
-    int safeSeq[10];
-    if (checkSafety(n, m, tempAlloc, tempNeed, tempAvail, safeSeq)) {
-        for (int i = 0; i < m; i++) {
-            avail[i] = tempAvail[i];
-            alloc[process][i] = tempAlloc[process][i];
-            need[process][i] = tempNeed[process][i];
-        }
+return true;
+}
 
-        cout << "Request granted!\n";
-        return true;
-    } else {
-        cout << "Request denied (unsafe state)!\n";
+
+bool resourcereq(vector<vector<int>> &alloc,vector<vector<int>> &max,vector<vector<int>> &need,vector<int> avilable,int n,int m,vector<int> &res,int p){
+   for(int i=0;i<m;i++){
+    if(avilable[i]<res[i]){
+        cout<<"\n wait resorces not avilable\n";
         return false;
     }
+    if(need[p][i]<res[i]){
+        cout<<"\n error exiceed max claims";
+        return false;
+    }
+
+   }
+
+   vector<int> tempAvail = avilable;
+    vector<vector<int>> tempAlloc = alloc;
+    vector<vector<int>> tempNeed = need;
+
+    for (int i = 0; i < m; i++) {
+
+        tempAvail[i] -= res[i];
+        tempAlloc[p][i] += res[i];
+        tempNeed[p][i] -= res[i];
+    }
+
+   
+
+    if (checksafty(tempAlloc,max,tempNeed ,tempAvail,n,m)) {
+
+        avilable = tempAvail;
+        alloc = tempAlloc;
+        need = tempNeed;
+
+        cout << "Request Granted!\n";
+        return true;
+    }
+
+    else {
+
+        cout << "Request Denied (Unsafe State)\n";
+        return false;
+    }
+
+
 }
 
-int main() {
-    int n, m, choice;
 
-    cout << "Enter number of processes: ";
-    cin >> n;
+int main(){
+int n,m;
+cout<<"\n enter number of processes:";
+cin>>n;
+cout<<"\nenetr number of resorcese:";
+cin>>m;
 
-    cout << "Enter number of resources: ";
-    cin >> m;
+vector<vector<int>> alloc(n,vector<int>(m));
+vector<vector<int>> max(n,vector<int>(m));
+vector<vector<int>> need(n,vector<int>(m));
+vector<int> avilable(m);
 
-    int alloc[10][10], maxm[10][10], need[10][10], avail[10];
+cout<<"\n give allocation matrix:\n";
 
-    cout << "Enter Allocation Matrix:\n";
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-            cin >> alloc[i][j];
+for(int i=0;i<n;i++){
+    for(int j=0;j<m;j++){
+        cin>>alloc[i][j];
 
-    cout << "Enter Max Matrix:\n";
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-            cin >> maxm[i][j];
+    }
+}
 
-    cout << "Enter Available Resources:\n";
-    for (int i = 0; i < m; i++)
-        cin >> avail[i];
+cout<<"\n give max matrix\n";
+for(int i=0;i<n;i++){
+    for(int j=0;j<m;j++){
+        cin>>max[i][j];
+    }
+}
 
-    calculateNeed(n, m, alloc, maxm, need);
+cout<<"\n give avilable resorcese\n";
 
-    do {
-        cout << "\n===== BANKER'S ALGORITHM MENU =====\n";
-        cout << "1. Display System State\n";
-        cout << "2. Check Safety\n";
-        cout << "3. Request Resources\n";
-        cout << "4. Exit\n";
-        cout << "Enter choice: ";
-        cin >> choice;
+for(int i=0;i<m;i++){
+    cin>>avilable[i];
+}
 
-        switch (choice) {
-            case 1:
-                displayMatrices(n, m, alloc, maxm, need, avail);
-                break;
 
-            case 2: {
-                int safeSeq[10];
-                checkSafety(n, m, alloc, need, avail, safeSeq);
-                break;
-            }
 
-            case 3: {
-                int process, request[10];
+needmatrix(alloc,max,need,n,m);
+int c;
 
-                cout << "Enter process number: ";
-                cin >> process;
+do{
+    cout<<"\nmenu\n";
+    cout<<"1)dispaly ";
+    cout<<"\n2)cheack system is safe or not (bankers algorithm)\n";
+    cout<<"3)resources request\n";
+    cout<<"4)exit program";
 
-                cout << "Enter request:\n";
-                for (int i = 0; i < m; i++)
-                    cin >> request[i];
+    cout<<"\nenter choice:";
+    cin>>c;
 
-                requestResources(n, m, alloc, need, avail, process, request);
-                break;
-            }
+    switch(c){
 
-            case 4:
-                cout << "Exiting...\n";
-                break;
+      case 1:
+          dispaly(alloc,need,max,avilable,n,m);
+          break;
 
-            default:
-                cout << "Invalid choice!\n";
-        }
 
-    } while (choice != 4);
+    case 2:
+        checksafty(alloc,max,need,avilable,n,m);
+        break;
 
-    return 0;
+    case 3:{
+    cout<<"\n enter process which you want to give resoreces:";
+    int p;
+    cin>>p;
+    vector<int> res(m,0);
+       cout<<"\nenter resorces:";
+       for(int i=0;i<m;i++){
+        cin>>res[i];
+       }
+          resourcereq(alloc,max,need ,avilable,n,m,res,p);
+          break;
+    }
+    case 4:
+      cout<<"\nexiting...";
+      return 0;
+       
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+}while(c!=4);
+
+
+
+
+
+
+
+
 }
